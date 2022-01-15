@@ -1,0 +1,10 @@
+policies:
+  - name: my-first-policy-pull-stop-tagged-ec2
+    resource: aws.ec2
+    filters:
+      - tag:c7n-101: "my-first-policy-pull"
+    actions:
+      - stop
+      - type: tag
+        tags:
+          c7n-101: "it worked!"
