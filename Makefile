@@ -1,11 +1,14 @@
 demo-infra-provision:
 # Use Terraform to provision demo infrastructure
+# Also replaces any instance of `{your_account_id}` in policy files so they can execute
 	terraform -chdir=resources/example-policies-infrastructure apply
+	make inject-account-id
 
 demo-infra-destroy:
 # Use a Cloud Custodian policy to delete demo infrastructure tagged `c7n-101`
-# TODO: Also restores files changed by `make inject-account-id` so account id is not accidentally committed anywhere
+# Also restores files changed by `make inject-account-id` so account ID is not accidentally committed anywhere
 	custodian run resources/example-policies/cleanup-policies.yml -s resources/example-policies/policy-execution-output
+	make inject-account-id
 
 inject-account-id:
 # Run `helpers/inject_account_id.py` to replace `{your_account_id}` in `resources/example-policies/my-first-policy-event.yml` with AWS account id from default profile
