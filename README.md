@@ -1,4 +1,4 @@
-# c7n Examples Directory
+# c7n Examples Repository 
 
 This directory contains resources intended to facilitate webinar instruction.
 
