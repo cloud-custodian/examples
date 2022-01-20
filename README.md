@@ -1,4 +1,14 @@
-# c7n Examples/Resources Directory
+# c7n Examples Directory
 
-This repo will contain example policies from our documentation, workshops, talks, and other things the community finds useful.
-We're in the process of organizing how this repo will look, but if you have a set of policies you'd like to share with the community please file a PR with them and we'll get started.
+This directory contains resources intended to facilitate webinar instruction.
+
+```
+├── Makefile : Make targets to facilitate demo infra provisioning and tear down
+├── README.md : This file
+├── helpers : Helper scripts
+├── requirements.txt
+└── resources : Example c7n policies, Terraform
+    ├── example-policies : Example policies and policy execution output
+    │   └── policy-execution-output : Policy execution output
+    └── example-policies-infrastructure: Terraform and related infrastructure files
+```
