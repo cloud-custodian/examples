@@ -5,9 +5,7 @@ policies:
       - tag:c7n-101: present
     actions:
       - terminate
-      - type: tag
-        tags:
-          c7n-101: "marked for termination"
+
   - name: terminate-c7n-101-tagged-roles
     resource: aws.iam-role
     filters:
@@ -15,15 +13,10 @@ policies:
     actions:
       - type: delete
         force: true
-      - type: tag
-        tags:
-          c7n-101: "marked for termination"
+
   - name: terminate-c7n-101-tagged-lambdas
     resource: aws.lambda
     filters:
       - tag:c7n-101: present
     actions:
       - type: delete
-      - type: tag
-        tags:
-          c7n-101: "marked for termination"

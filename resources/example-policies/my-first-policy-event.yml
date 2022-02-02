@@ -5,6 +5,8 @@ policies:
       type: periodic
       schedule: "rate(2 minutes)"
       role: arn:aws:iam::{account_id}:role/system/c7n-101-lambda-role
+      tags:
+        c7n-101: " "
     filters:
       - "tag:c7n-101": "my-first-policy-event"
     actions:
