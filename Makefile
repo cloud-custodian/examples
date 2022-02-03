@@ -1,23 +1,10 @@
 demo-infra-provision:
 # Use Terraform to provision demo infrastructure
 # Also replaces any instance of `{your_account_id}` in policy files so they can execute
-	@echo
-
-	echo -e "\e[35mRunning terraform plan . . ."
-	@echo
-	terraform -chdir=resources/example-policies-infrastructure apply
 
 demo-infra-destroy:
 # Use a Cloud Custodian policy to delete demo infrastructure tagged `c7n-101`
 # Also restores files changed by `make inject-account-id` so account ID is not accidentally committed anywhere
-	@echo 
-	@echo "Running terraform plan . . ."
-	@echo
-	terraform -chdir=resources/example-policies-infrastructure plan -out=destroy-plan -destroy
-	@echo 
-	@echo "Type 'yes' to proceed with terraform plan: "
-	@read user_input
-	@echo "you wrote $(user_input)"
 
 describe-ec2s:
 # Use AWS CLI to output a table of all EC2 instances tagged `c7n-101`
