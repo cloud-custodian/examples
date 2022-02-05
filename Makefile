@@ -12,7 +12,7 @@ make install:
 	@echo "\033[95mInstalling c7n project . . .\033[0m"
 	@echo
 	pip install -e git+https://github.com/cloud-custodian/cloud-custodian.git#egg=c7n
-		@echo
+	@echo
 	@echo "\033[95mAll done!\033[0m"
 	@echo
 
