@@ -10,27 +10,25 @@ function mugc_run () {
     echo
     python3 -m tools.ops.mugc -c resources/example-policies/*.yml --present --dryrun
     output=$(python3 -m tools.ops.mugc -c resources/example-policies/*.yml --present --dryrun 2>&1)
-    if [ "$output" ];
-    then
-    echo
-    echo "${PURPLE_REGULAR}Type ${PURPLE_BOLD}'YES' ${PURPLE_REGULAR}to proceed with mugc run."
-    read answer
-        if [ "$answer" = 'YES' ];
+    if [ "${output}" ];
         then
         echo
-        echo "${PURPLE_REGULAR}Running tools.ops.mugc. See repo ${PURPLE_BOLD}README ${PURPLE_REGULAR}for more details.${RESET_TEXT}"
-        echo
-        python3 -m tools.ops.mugc -c resources/example-policies/*.yml --present
+        read -p "${PURPLE_REGULAR}Type ${PURPLE_BOLD}'YES' ${PURPLE_REGULAR}to proceed with mugc run. " answer
+        if [ "${answer}" = 'YES' ];
+            then
+            echo
+            echo "${PURPLE_REGULAR}Running tools.ops.mugc. See repo ${PURPLE_BOLD}README ${PURPLE_REGULAR}for more details.${RESET_TEXT}"
+            echo
+            python3 -m tools.ops.mugc -c resources/example-policies/*.yml --present
         else
-        echo
-        echo "User input: $answer. Skipping."
-        echo
+            echo
+            echo "User input: ${answer}. Skipping."
+            echo
         fi
-    # local answer="$input"
     else
-    echo
-    echo "${PURPLE_REGULAR}No Custodian created lambdas found to destroy. Skipping."
-    echo
+        echo
+        echo "${PURPLE_REGULAR}No Custodian created lambdas found to destroy. Skipping."
+        echo
     fi
 }
 
@@ -50,8 +48,21 @@ function demo_infra_provision () {
     echo
     echo "${PURPLE_REGULAR}Running terraform apply. See repo ${PURPLE_BOLD}README ${PURPLE_REGULAR}for more details."
     echo
+    terraform -chdir=resources/example-policies-infrastructure init
     terraform -chdir=resources/example-policies-infrastructure apply
     echo
     echo "${PURPLE_REGULAR}Provisioning complete."
     echo
+}
+
+function describe_all_resources () {
+    echo
+    read -p "${PURPLE_REGULAR}Note! Running this will output account numbers. Type 'YES' to proceed. " answer
+
+    if [ "${answer}" = "YES" ];
+        then
+        aws resourcegroupstaggingapi get-resources --tag-filters Key=c7n-101 --query 'ResourceTagMappingList[*].{ARN: ResourceARN,tagKey:Tags[?Key==`c7n-101`]|[0].Key,tagValue:Tags[?Key==`c7n-101`]|[0].Value}' --output table
+    else
+        echo "User input: ${answer}. Skipping."
+    fi 
 }
