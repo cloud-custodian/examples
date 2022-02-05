@@ -20,7 +20,7 @@ This directory provides example c7n policies, demo infrastructure via Terraform,
 In order to use this repo, you will need:
 * [Python 3.7+](https://www.python.org/)
 * [Terraform](https://www.terraform.io/)
-* [AWS account]((https://aws.amazon.com/))
+* [AWS account](https://aws.amazon.com/)
 * [AWS CLI](https://aws.amazon.com/cli/)
 
 # Support
