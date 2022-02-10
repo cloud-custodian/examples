@@ -8,7 +8,7 @@ policies:
       tags:
         c7n-101: " "
     filters:
-      - "tag:c7n-101": "my-first-policy-event"
+      - tag:c7n-101: "my-first-policy-event"
     actions:
       - stop
       - type: tag
