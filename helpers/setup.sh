@@ -66,3 +66,16 @@ function describe_all_resources () {
         echo "User input: ${answer}. Skipping."
     fi 
 }
+
+function aws_cloudshell_setup () {
+    echo
+    echo "${PURPLE_REGULAR}Installing dependencies for AWS CloudShell. See repo ${PURPLE_BOLD}README ${PURPLE_REGULAR}for more details."
+    echo
+    curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+    sudo yum install -y yum-utils
+    sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+    sudo yum -y install terraform
+    echo
+    echo "${PURPLE_REGULAR}Complete!"
+    echo
+}

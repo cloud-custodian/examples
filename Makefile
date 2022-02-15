@@ -5,19 +5,16 @@ help: ## Show this help
 	@egrep -h '\s##\s' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[35m%-30s\033[0m %s\n", $$1, $$2}'
 
 install: ## Install dependencies
-	python3 -m venv venv
-	. venv/bin/activate
-	@echo
-	@echo "\033[95mInstalling c7n project . . .\033[0m"
-	@echo
-	pip install -e git+https://github.com/cloud-custodian/cloud-custodian.git@0.9.14.0#egg=c7n
 	@echo
 	@echo "\033[95mInstalling dependencies . . .\033[0m"
 	@echo
-	pip install -r requirements.txt
+	poetry install
 	@echo
 	@echo "\033[95mAll done!\033[0m"
 	@echo
+
+install-cloudshell:
+	source helpers/setup.sh && aws_cloudshell_setup
 
 demo-infra-provision: ## Use Terraform to provision demo infrastructure
 	source helpers/setup.sh && demo_infra_provision
