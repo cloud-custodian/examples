@@ -6,8 +6,6 @@ authors = ["Cloud Custodian Project"]
 readme = "README.md"
 homepage = "https://cloudcustodian.io"
 repository = "https://github.com/cloud-custodian/examples"
-packages = [
-    { include = "c7n" }]
 
 [tool.poetry.dependencies]
 python = "^3.7"
