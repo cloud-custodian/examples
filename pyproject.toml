@@ -7,6 +7,9 @@ readme = "README.md"
 homepage = "https://cloudcustodian.io"
 repository = "https://github.com/cloud-custodian/examples"
 
+[tool.poetry.scripts]
+custodian = 'c7n.cli:main'
+
 [tool.poetry.dependencies]
 python = "^3.7"
 c7n = "^0.9.14"

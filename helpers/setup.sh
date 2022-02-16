@@ -8,8 +8,8 @@ function mugc_run () {
     echo
     echo "${PURPLE_REGULAR}Running tools.ops.mugc ${PURPLE_BOLD}with dryrun flag${PURPLE_REGULAR}. See repo ${PURPLE_BOLD}README ${PURPLE_REGULAR}for more details.${RESET_TEXT}"
     echo
-    python3 -m tools.ops.mugc -c resources/example-policies/*.yml --present --dryrun
-    output=$(python3 -m tools.ops.mugc -c resources/example-policies/*.yml --present --dryrun 2>&1)
+    python3 -m src.c7n.tools.ops.mugc -c resources/example-policies/*.yml --present --dryrun
+    output=$(python3 -m src.c7n.tools.ops.mugc -c resources/example-policies/*.yml --present --dryrun 2>&1)
     if [ "${output}" ];
         then
         echo
@@ -19,7 +19,7 @@ function mugc_run () {
             echo
             echo "${PURPLE_REGULAR}Running tools.ops.mugc. See repo ${PURPLE_BOLD}README ${PURPLE_REGULAR}for more details.${RESET_TEXT}"
             echo
-            python3 -m tools.ops.mugc -c resources/example-policies/*.yml --present
+            python3 -m src.c7n.tools.ops.mugc -c resources/example-policies/*.yml --present
         else
             echo
             echo "User input: ${answer}. Skipping."
@@ -67,11 +67,27 @@ function describe_all_resources () {
     fi 
 }
 
-function aws_cloudshell_setup () {
+function local_install () {
+    echo
+	echo "${PURPLE_REGULAR}Installing dependencies . . ."
+	echo
+	poetry install
+	echo
+	read -p "${PURPLE_REGULAR}Installation complete. Type 'YES' to activate virtual environment. Use 'exit' to deactivate virtual environment." answer
+    if [ "${answer}" = "YES" ];
+        then
+        poetry shell
+    else
+        echo "User input: ${answer}. Virtual environment will not be activated. Use 'poetry shell' to activate virtual environment. Use 'exit' to deactivate virtual environment."
+    fi
+}
+
+function aws_cloudshell_install () {
     echo
     echo "${PURPLE_REGULAR}Installing dependencies for AWS CloudShell. See repo ${PURPLE_BOLD}README ${PURPLE_REGULAR}for more details."
     echo
     curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+    source $HOME/.poetry/env
     sudo yum install -y yum-utils
     sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
     sudo yum -y install terraform
