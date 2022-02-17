@@ -2,22 +2,14 @@
 
 .PHONY: help
 help: ## Show this help
-	@egrep -h '\s##\s' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[35m%-30s\033[0m %s\n", $$1, $$2}'
+	@egrep -h '\s##\s' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[95m%-30s\033[0m %s\n", $$1, $$2}'
 
-install: ## Install dependencies
-	python3 -m venv venv
-	. venv/bin/activate
-	@echo
-	@echo "\033[95mInstalling c7n project . . .\033[0m"
-	@echo
-	pip install -e git+https://github.com/cloud-custodian/cloud-custodian.git@0.9.14.0#egg=c7n
-	@echo
-	@echo "\033[95mInstalling dependencies . . .\033[0m"
-	@echo
-	pip install -r requirements.txt
-	@echo
-	@echo "\033[95mAll done!\033[0m"
-	@echo
+install: ## Use Poetry to install dependencies to use this repo locally
+	source helpers/setup.sh && install
+
+install-cloudshell: ## Use Poetry and Yum to install dependencies to use this repo in AWS CloudShell
+	source helpers/setup.sh && aws_cloudshell_install
+	make install
 
 demo-infra-provision: ## Use Terraform to provision demo infrastructure
 	source helpers/setup.sh && demo_infra_provision
