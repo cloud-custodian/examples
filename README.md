@@ -35,7 +35,7 @@ Currently, this repo supports:
 
 The Makefile contains a set of targets that automate common processes.
 
-`install-local` downloads and prepares dependencies so Terraform and policies can be executed as intended. This install assumes you already have Poetry and Terraform.
+`install` downloads and prepares dependencies so Terraform and policies can be executed as intended. This install assumes you already have Poetry and Terraform.
 
 `install-cloudshell` downloads and prepares dependencies so Terraform and policies can be executed as intended within AWS [CloudShell](https://console.aws.amazon.com/cloudshell). This install includes download and installation of Poetry and Terraform as well.
 

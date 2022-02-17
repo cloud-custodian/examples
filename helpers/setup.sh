@@ -67,7 +67,7 @@ function describe_all_resources () {
     fi 
 }
 
-function local_install () {
+function install () {
     echo
 	echo "${PURPLE_REGULAR}Installing dependencies . . ."
 	echo
@@ -80,6 +80,8 @@ function aws_cloudshell_install () {
     echo
     echo "${PURPLE_REGULAR}Installing dependencies for AWS CloudShell. See repo ${PURPLE_BOLD}README ${PURPLE_REGULAR}for more details."
     echo
+    sudo amazon-linux-extras install epel
+    sudo yum install bash-completion-extras
     curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
     source $HOME/.poetry/env
     sudo yum install -y yum-utils
