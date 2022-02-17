@@ -4,12 +4,12 @@
 help: ## Show this help
 	@egrep -h '\s##\s' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[95m%-30s\033[0m %s\n", $$1, $$2}'
 
-install-local: ## Use Poetry to install dependencies to use this repo locally
+install: ## Use Poetry to install dependencies to use this repo locally
 	source helpers/setup.sh && install
 
 install-cloudshell: ## Use Poetry and Yum to install dependencies to use this repo in AWS CloudShell
 	source helpers/setup.sh && aws_cloudshell_install
-	source helpers/setup.sh && install
+	make install
 
 demo-infra-provision: ## Use Terraform to provision demo infrastructure
 	source helpers/setup.sh && demo_infra_provision

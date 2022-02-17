@@ -69,10 +69,10 @@ function describe_all_resources () {
 
 function install () {
     echo
-	echo "${PURPLE_REGULAR}Installing dependencies . . ."
+	echo "${PURPLE_REGULAR}Installing dependencies . . .${RESET_TEXT}"
 	echo
 	poetry install
-	echo "${PURPLE_REGULAR}Installation complete. Use 'poetry shell' to activate a virtual environment.${RESET_TEXT}"
+	echo "${PURPLE_REGULAR}Installation complete. Use ${PURPLE_BOLD}'poetry shell'${PURPLE_REGULAR} to activate a virtual environment.${RESET_TEXT}"
 	echo
 }
 
@@ -80,13 +80,12 @@ function aws_cloudshell_install () {
     echo
     echo "${PURPLE_REGULAR}Installing dependencies for AWS CloudShell. See repo ${PURPLE_BOLD}README ${PURPLE_REGULAR}for more details."
     echo
-    sudo amazon-linux-extras install epel
-    sudo yum install bash-completion-extras
-    curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
-    source $HOME/.poetry/env
-    sudo yum install -y yum-utils
-    sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+    curl -sSL https://install.python-poetry.org | python3 - # Install Poetry
+    sudo yum install -y yum-utils # Install yum-utils so Terraform can be installed
+    sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo 
     sudo yum -y install terraform
+    sudo amazon-linux-extras install epel # Install extras for things like tab completion, etc
+    sudo yum install bash-completion-extras
     echo
     echo "${PURPLE_REGULAR}Installation complete.${RESET_TEXT}"
     echo
