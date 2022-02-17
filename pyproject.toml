@@ -9,7 +9,7 @@ repository = "https://github.com/cloud-custodian/examples"
 
 [tool.poetry.dependencies]
 python = "^3.7"
-c7n = {git = "https://github.com/cloud-custodian/cloud-custodian.git", rev = "0.9.14.0"}
+c7n = "^0.9.14"
 appdirs = "1.4.4"
 argcomplete = "1.12.3"
 attrs = "21.2.0"
