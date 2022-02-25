@@ -1,0 +1,3 @@
+policies:
+  - name: aws-iam-role-list
+    resource: aws.iam-role

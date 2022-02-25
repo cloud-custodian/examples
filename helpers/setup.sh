@@ -8,8 +8,8 @@ function mugc_run () {
     echo
     echo "${PURPLE_REGULAR}Running tools.ops.mugc ${PURPLE_BOLD}with dryrun flag${PURPLE_REGULAR}. See repo ${PURPLE_BOLD}README ${PURPLE_REGULAR}for more details.${RESET_TEXT}"
     echo
-    poetry run python helpers/mugc.py resources/example-policies/*.yml --present --dryrun
-    output=$(poetry run python helpers/mugc.py resources/example-policies/*.yml --present --dryrun 2>&1)
+    poetry run python helpers/mugc.py resources/example-policies/${1}/*.yml --present --dryrun
+    output=$(poetry run python helpers/mugc.py resources/example-policies/${1}/*.yml --present --dryrun 2>&1)
     if [ "${output}" ];
         then
         echo
@@ -19,7 +19,7 @@ function mugc_run () {
             echo
             echo "${PURPLE_REGULAR}Running tools.ops.mugc. See repo ${PURPLE_BOLD}README ${PURPLE_REGULAR}for more details.${RESET_TEXT}"
             echo
-            poetry run python helpers/mugc.py resources/example-policies/*.yml --present
+            poetry run python helpers/mugc.py resources/example-policies/${1}/*.yml --present
         else
             echo
             echo "User input: ${answer}. Skipping.${RESET_TEXT}"
@@ -36,9 +36,9 @@ function demo_infra_destroy () {
     echo
     echo "${PURPLE_REGULAR}Running terraform destroy. See repo ${PURPLE_BOLD}README ${PURPLE_REGULAR}for more details."
     echo
-    terraform -chdir=resources/example-policies-infrastructure destroy
+    terraform -chdir=resources/example-policies-infrastructure/${1} destroy
     echo
-    mugc_run
+    mugc_run ${1}
     echo
     echo "${PURPLE_REGULAR}Destruction complete.${RESET_TEXT}"
     echo
@@ -48,8 +48,8 @@ function demo_infra_provision () {
     echo
     echo "${PURPLE_REGULAR}Running terraform apply. See repo ${PURPLE_BOLD}README ${PURPLE_REGULAR}for more details.${RESET_TEXT}"
     echo
-    terraform -chdir=resources/example-policies-infrastructure init
-    terraform -chdir=resources/example-policies-infrastructure apply
+    terraform -chdir=resources/example-policies-infrastructure/${1} init
+    terraform -chdir=resources/example-policies-infrastructure/${1} apply
     echo
     echo "${PURPLE_REGULAR}Provisioning complete.${RESET_TEXT}"
     echo
@@ -67,6 +67,14 @@ function describe_all_resources () {
     fi 
 }
 
+function describe_sqs () {
+    output=$(aws sqs get-queue-url --queue-name c7n-workshop-queue 2>&1)
+    IFS=' '
+    read -a strarr <<< "$output"
+    aws sqs list-queue-tags --queue-url ${strarr[1]}
+    
+}
+
 function install () {
     echo
 	echo "${PURPLE_REGULAR}Installing dependencies . . .${RESET_TEXT}"
@@ -81,6 +89,7 @@ function aws_cloudshell_install () {
     echo "${PURPLE_REGULAR}Installing dependencies for AWS CloudShell. See repo ${PURPLE_BOLD}README ${PURPLE_REGULAR}for more details."
     echo
     curl -sSL https://install.python-poetry.org | python3 - # Install Poetry
+    source $HOME/.poetry/env
     sudo yum install -y yum-utils # Install yum-utils so Terraform can be installed
     sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo 
     sudo yum -y install terraform

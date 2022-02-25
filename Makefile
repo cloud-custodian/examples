@@ -11,10 +11,10 @@ install-cloudshell: ## Use Poetry and Yum to install dependencies to use this re
 	source helpers/setup.sh && aws_cloudshell_install
 	make install
 
-demo-infra-provision: ## Use Terraform to provision demo infrastructure
+101-infra-provision: ## Use Terraform to provision demo infrastructure
 	source helpers/setup.sh && demo_infra_provision
 
-demo-infra-destroy: ## Use Terraform and c7n mugc to destroy any infrastructure created for demo purposes
+101-infra-destroy: ## Use Terraform and c7n mugc to destroy any infrastructure created for demo purposes
 	source helpers/setup.sh && demo_infra_destroy
 
 custodian-run-commands-help: ## Print out the Cloud Custodian commands to run policies
@@ -40,4 +40,14 @@ describe-roles: ## Use AWS CLI to output a table of all roles with the name `c7n
 describe-all-resources: ## Use AWS CLI to output a table of all resources tagged `c7n-101`
 # This target is intended to check for any instances missed by `make demo-infra-destroy`
 # This target will output account numbers, so please use with caution
-	source helpers/setup.sh && describe_all_resources 
+	source helpers/setup.sh && describe_all_resources
+
+workshop-infra-provision: ## Use Terraform to provision workshop demo infrastructure
+	source helpers/setup.sh && demo_infra_provision c7n-workshop
+
+workshop-infra-destroy: ## Use Terraform and c7n mugc to destroy any infrastructure created for demo purposes
+	source helpers/setup.sh && demo_infra_destroy c7n-workshop
+
+describe-sqs:
+	source helpers/setup.sh && describe_sqs
+

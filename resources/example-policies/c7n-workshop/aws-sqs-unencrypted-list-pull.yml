@@ -1,0 +1,6 @@
+policies:
+  - name: aws-sqs-unencrypted
+    resource: aws.sqs
+    filters:
+      - tag:c7n-workshop: " "
+      - "KmsMasterKeyId": absent
