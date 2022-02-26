@@ -72,6 +72,7 @@ function describe_sqs () {
     IFS=' '
     read -a strarr <<< "$output"
     aws sqs list-queue-tags --queue-url ${strarr[1]}
+    aws sqs get-queue-attributes --queue-url ${strarr[1]} --attribute-names KmsMasterKeyId
     
 }
 
@@ -98,4 +99,24 @@ function aws_cloudshell_install () {
     echo
     echo "${PURPLE_REGULAR}Installation complete.${RESET_TEXT}"
     echo
+}
+
+function stop_instance () {
+    read -p "${PURPLE_REGULAR}Enter an instance ID to stop: " answer
+    aws ec2 stop-instances --instance-ids ${answer}
+}
+
+function start_instance () {
+    read -p "${PURPLE_REGULAR}Enter an instance ID to start: " answer
+    aws ec2 start-instances --instance-ids ${answer}
+}
+
+function describe_ec2s () {
+    read -p "${PURPLE_REGULAR}Enter a tag to filter by: " answer
+    aws ec2 describe-instances --filters "Name=tag-key,Values=$answer" --query 'Reservations[*].Instances[*].{Instance:InstanceId,tagKey:Tags[?Key==`'${answer}'`]|[0].Key,tagValue:Tags[?Key==`'${answer}'`]|[0].Value,State:State.Name}' --output table
+}
+
+function describe_tags () {
+    read -p "${PURPLE_REGULAR}Enter an instance ID to view tags for: " answer
+    aws ec2 describe-tags --filters "Name=resource-id,Values=${answer}" --output table
 }

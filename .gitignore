@@ -1,5 +1,6 @@
-# project files
-resources/example-policies/policy-execution-output
+# project files and directories
+resources/example-policies/c7n-101/policy-execution-output/
+resources/example-policies/c7n-workshop/policy-execution-output/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
