@@ -21,7 +21,6 @@ function aws_cloudshell_install () {
     echo "${PURPLE_REGULAR}Installing dependencies for AWS CloudShell. See repo ${PURPLE_BOLD}README ${PURPLE_REGULAR}for more details."
     echo
     curl -sSL https://install.python-poetry.org | python3 - # Install Poetry
-    source $HOME/.poetry/env
     sudo yum install -y yum-utils # Install yum-utils so Terraform can be installed
     sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo 
     sudo yum -y install terraform
@@ -89,12 +88,51 @@ function demo_infra_destroy () {
 # AWS CLI wrapper functions
 function stop_instance () {
     read -p "${PURPLE_REGULAR}Enter an instance ID to stop: " answer
+    echo
     aws ec2 stop-instances --instance-ids ${answer}
 }
 
 function start_instance () {
     read -p "${PURPLE_REGULAR}Enter an instance ID to start: " answer
+    echo
     aws ec2 start-instances --instance-ids ${answer}
+}
+
+function update_security_group () {
+    read -p "${PURPLE_REGULAR}Enter group ID to update: " answer
+    echo
+    aws ec2 authorize-security-group-egress --group-id ${answer} --ip-permissions IpProtocol=-1,FromPort=0,ToPort=0,IpRanges=[{CidrIp=0.0.0.0/0}]
+}
+
+function delete_security_group () {
+    read -p "${PURPLE_REGULAR}Enter group ID to delete: " group_id
+    read -p "${PURPLE_REGULAR}This will permanently delete Security Group ${group_id}. This action cannot be reversed. Type 'YES' to proceed with deletion. " answer 
+    echo
+
+    if [ "${answer}" = "YES" ];
+        then
+        echo "${PURPLE_REGULAR}Deleting Security Group: ${group_id}."
+        aws ec2 delete-security-group --group-id ${group_id}
+    else
+        echo "User input: ${answer}. Skipping.${RESET_TEXT}"
+    fi 
+}
+
+function delete_queue () {
+    read -p "${PURPLE_REGULAR}Enter a queue name to delete. Options are {c7n-workshop-queue}: " queue_name
+    read -p "${PURPLE_REGULAR}This will permanently delete Queue ${queue_name}. This action cannot be reversed. Type 'YES' to proceed with deletion. " answer 
+    echo
+
+    if [ "${answer}" = "YES" ];
+        then
+        echo "${PURPLE_REGULAR}Deleting Queue: ${queue_name}."
+        queue_url=$(aws sqs get-queue-url --queue-name ${queue_name} --query 'QueueUrl' 2>&1)
+        queue_url="${queue_url%\"}"
+        queue_url="${queue_url#\"}" 
+        aws sqs delete-queue --queue-url ${queue_url}
+    else
+        echo "User input: ${answer}. Skipping.${RESET_TEXT}"
+    fi
 }
 
 function describe_all_resources () {
@@ -126,19 +164,19 @@ function describe_roles () {
     aws iam get-role --role-name ${answer} --query 'Role.{Name:RoleName,Tags:Tags[*]}' --output table
 }
 
-function describe_sgs () {
+function describe_security_groups () {
     read -p "${PURPLE_REGULAR}Enter a tag to filter by. Options are {c7n-101, c7n-workshop}: " answer
     echo
-    aws ec2 describe-security-groups --filters Name=tag-key,Values=${answer} --query 'SecurityGroups[*].{GroupName:GroupName,ipRanges:IpPermissions[0].IpRanges[0].CidrIp,ipV6Ranges:IpPermissions[0].Ipv6Ranges[0].CidrIpv6,Tags:Tags[*]}' --output table
+    aws ec2 describe-security-groups --filters Name=tag-key,Values=${answer} --query 'SecurityGroups[*].{groupID:GroupId,GroupName:GroupName,ipRanges:IpPermissions[0].IpRanges[0].CidrIp,ipV6Ranges:IpPermissions[0].Ipv6Ranges[0].CidrIpv6,Tags:Tags[*]}' --output table
 }
 
-function describe_sqs () {
+function describe_queue () {
     read -p "${PURPLE_REGULAR}Enter a queue name to view. Options are {c7n-workshop-queue}: " answer
-    output=$(aws sqs get-queue-url --queue-name ${answer} 2>&1)
-    IFS=' '
-    read -a strarr <<< "$output"
-    aws sqs list-queue-tags --queue-url ${strarr[1]}
-    aws sqs get-queue-attributes --queue-url ${strarr[1]} --attribute-names KmsMasterKeyId 
+    queue_url=$(aws sqs get-queue-url --queue-name ${answer} --query 'QueueUrl' 2>&1)
+    queue_url="${queue_url%\"}"
+    queue_url="${queue_url#\"}" 
+    aws sqs list-queue-tags --queue-url ${queue_url}
+    aws sqs get-queue-attributes --queue-url ${queue_url} --attribute-names KmsMasterKeyId 
 }
 
 function describe_tags () {

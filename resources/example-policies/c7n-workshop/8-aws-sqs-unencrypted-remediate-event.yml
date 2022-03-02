@@ -16,8 +16,8 @@ policies:
     filters:
       - "KmsMasterKeyId": absent
     actions:
-      - type: set-encryption
-        key: aws/sqs
       - type: tag
         tags:
-          c7n-workshop: "it worked!"
+          c7n-workshop: "it worked"
+      - type: set-encryption
+        key: aws/sqs

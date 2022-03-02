@@ -7,11 +7,11 @@ provider "aws" {
 resource "aws_iam_role" "c7n-workshop-lambda-iam-role" {
   name               = "c7n-workshop-lambda-role"
   path               = "/system/"
-  assume_role_policy = file("my-first-policy-event-trust-policy.json")
+  assume_role_policy = file("c7n-workshop-trust-policy.json")
 
   inline_policy {
-    name   = "my-first-policy-event-rw-ec2-cloudwatch-policy"
-    policy = file("my-first-policy-event-rw-ec2-cloudwatch-policy.json")
+    name   = "c7n-workshop-policy"
+    policy = file("c7n-workshop-policy.json")
   }
 
   tags = {

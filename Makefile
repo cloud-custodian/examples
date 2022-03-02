@@ -41,7 +41,16 @@ stop-instance: ## Specify an EC2 instance to stop
 	source helpers/setup.sh && stop_instance
 
 start-instance: ## Specify an EC2 instance to start
-	source helpers/setup.sh && stop_instance
+	source helpers/setup.sh && start_instance
+
+update-security-group: ## Specify a security group to update
+	source helpers/setup.sh && update_security_group
+
+delete-security-group: ## Specify a security group to delete
+	source helpers/setup.sh && delete_security_group
+
+delete-queue: ## Specify a queue to delete
+	source helpers/setup.sh && delete_queue
 
 describe-all-resources: ## Specify a tag to view all resources for -- displays account number so use with discretion
 	source helpers/setup.sh && describe_all_resources
@@ -55,11 +64,11 @@ describe-lambdas: ## List all Lamdbda functions with names prefixed with "custod
 describe-roles: ## Specify a role to view
 	source helpers/setup.sh && describe_roles
 
-describe-sgs: ## Specify a tag to view all security groups for
-	source helpers/setup.sh && describe_sgs
+describe-security-groups: ## Specify a tag to view all security groups for
+	source helpers/setup.sh && describe_security_groups
 
-describe-sqs: ## Specify a queue to view details of
-	source helpers/setup.sh && describe_sqs
+describe-queues: ## Specify a queue to view details of
+	source helpers/setup.sh && describe_queue
 
-describe-tags: ## Specify an EC2 to view tags for
+describe-ec2-tags: ## Specify an EC2 to view tags for
 	source helpers/setup.sh && describe_tags
