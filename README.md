@@ -34,7 +34,7 @@ In order to use this repo, you will need:
 
 * [Terraform](https://www.terraform.io/) to provision AWS infrastructure
 
-* [AWS CLoudShell](https://aws.amazon.com/cloudshell/) is not required, but strongly recommended
+* [AWS CloudShell](https://aws.amazon.com/cloudshell/) is not required, but strongly recommended
 
 # Support
 
