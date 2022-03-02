@@ -1,0 +1,15 @@
+## my-first-policy-pull ##
+
+# to run policy with verbose and dryrun flags :
+custodian run resources/example-policies/c7n-101/my-first-policy-pull.yml -s resources/example-policies/c7n-101/policy-execution-output --verbose --dryrun
+
+# to view a formatted report with customized tag field :
+custodian report resources/example-policies/c7n-101/my-first-policy-pull.yml -s resources/example-policies/c7n-101/policy-execution-output --field tag:c7n-101=tag:c7n-101 --format grid 
+
+## my-first-policy-event ##
+
+# to run my-first-policy-event with verbose and dryrun flags:
+custodian run resources/example-policies/c7n-101/my-first-policy-event.yml -s resources/example-policies/c7n-101/policy-execution-output --verbose --dryrun
+
+# to view a formatted report with customized tag field :
+custodian report resources/example-policies/c7n-101/my-first-policy-event.yml -s resources/example-policies/c7n-101/policy-execution-output --field tag:c7n-101=tag:c7n-101 --format grid

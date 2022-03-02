@@ -41,6 +41,7 @@ resource "aws_security_group" "c7n-workshop-security-group" {
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
+
   tags = {
     "c7n-workshop" : " "
     "Name" : "c7n-workshop-security-group"

@@ -1,0 +1,65 @@
+## 1-aws-iam-role-list-pull ##
+
+# to run policy with verbose and dryrun flags :
+custodian run resources/example-policies/c7n-workshop/1-aws-iam-role-list-pull.yml -s resources/example-policies/c7n-workshop/policy-execution-output --verbose --dryrun
+
+# to view a formatted report with customized tag field :
+custodian report resources/example-policies/c7n-workshop/1-aws-iam-role-list-pull.yml -s resources/example-policies/c7n-workshop/policy-execution-output --field tag:c7n-workshop=tag:c7n-workshop --format grid 
+
+## 2-aws-sg-wide-open-list-pull ##
+
+# to run policy with verbose and dryrun flags :
+custodian run resources/example-policies/c7n-workshop/2-aws-sg-wide-open-list-pull.yml -s resources/example-policies/c7n-workshop/policy-execution-output --verbose --dryrun
+
+# to view a formatted report with customized tag field :
+custodian report resources/example-policies/c7n-workshop/2-aws-sg-wide-open-list-pull.yml -s resources/example-policies/c7n-workshop/policy-execution-output --field tag:c7n-workshop=tag:c7n-workshop --format grid
+
+## 3-aws-sg-wide-open-remediate-pull ##
+
+# to run policy with verbose and dryrun flags :
+custodian run resources/example-policies/c7n-workshop/3-aws-sg-wide-open-remediate-pull.yml -s resources/example-policies/c7n-workshop/policy-execution-output --verbose --dryrun
+
+# to view a formatted report with customized tag field :
+custodian report resources/example-policies/c7n-workshop/3-aws-sg-wide-open-remediate-pull.yml -s resources/example-policies/c7n-workshop/policy-execution-output --field tag:c7n-workshop=tag:c7n-workshop --format grid
+
+## 4-aws-sqs-unencrypted-list-pull ##
+
+# to run policy with verbose and dryrun flags :
+custodian run resources/example-policies/c7n-workshop/4-aws-sqs-unencrypted-list-pull.yml -s resources/example-policies/c7n-workshop/policy-execution-output --verbose --dryrun
+
+# to view a formatted report with customized tag field :
+custodian report resources/example-policies/c7n-workshop/4-aws-sqs-unencrypted-list-pull.yml -s resources/example-policies/c7n-workshop/policy-execution-output --field tag:c7n-workshop=tag:c7n-workshop --format grid
+
+## 5-aws-sqs-unencrypted-remediate-pull ##
+
+# to run policy with verbose and dryrun flags :
+custodian run resources/example-policies/c7n-workshop/5-aws-sqs-unencrypted-remediate-pull.yml -s resources/example-policies/c7n-workshop/policy-execution-output --verbose --dryrun
+
+# to view a formatted report with customized tag field :
+custodian report resources/example-policies/c7n-workshop/5-aws-sqs-unencrypted-remediate-pull.yml -s resources/example-policies/c7n-workshop/policy-execution-output --field tag:c7n-workshop=tag:c7n-workshop --format grid
+
+## 6-aws-sg-open-remediate-event ##
+
+# to run policy with verbose and dryrun flags :
+custodian run resources/example-policies/c7n-workshop/6-aws-sg-open-remediate-event.yml -s resources/example-policies/c7n-workshop/policy-execution-output --verbose --dryrun
+
+# to view a formatted report with customized tag field :
+custodian report resources/example-policies/c7n-workshop/6-aws-sg-open-remediate-event.yml -s resources/example-policies/c7n-workshop/policy-execution-output --field tag:c7n-workshop=tag:c7n-workshop --format grid
+
+## 7-aws-sg-auto-tag-creator-event ##
+
+# to run policy with verbose and dryrun flags :
+custodian run resources/example-policies/c7n-workshop/7-aws-sg-auto-tag-creator-event.yml -s resources/example-policies/c7n-workshop/policy-execution-output --verbose --dryrun
+
+# to view a formatted report with customized tag field :
+custodian report resources/example-policies/c7n-workshop/7-aws-sg-auto-tag-creator-event.yml -s resources/example-policies/c7n-workshop/policy-execution-output --field tag:c7n-workshop=tag:c7n-workshop --format grid
+
+
+## 8-aws-sqs-unencrypted-remediate-event ##
+
+# to run policy with verbose and dryrun flags :
+custodian run resources/example-policies/c7n-workshop/8-aws-sqs-unencrypted-remediate-event.yml -s resources/example-policies/c7n-workshop/policy-execution-output --verbose --dryrun
+
+# to view a formatted report with customized tag field :
+custodian report resources/example-policies/c7n-workshop/8-aws-sqs-unencrypted-remediate-event.yml -s resources/example-policies/c7n-workshop/policy-execution-output --field tag:c7n-workshop=tag:c7n-workshop --format grid
+
