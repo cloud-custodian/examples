@@ -111,7 +111,7 @@ function delete_security_group () {
 
     if [ "${answer}" = "YES" ];
         then
-        echo "${PURPLE_REGULAR}Deleting Security Group: ${group_id}."
+        echo "${PURPLE_REGULAR}Deleting Security Group: ${group_id}.${RESET_TEXT}"
         aws ec2 delete-security-group --group-id ${group_id}
     else
         echo "User input: ${answer}. Skipping.${RESET_TEXT}"
@@ -125,7 +125,7 @@ function delete_queue () {
 
     if [ "${answer}" = "YES" ];
         then
-        echo "${PURPLE_REGULAR}Deleting Queue: ${queue_name}."
+        echo "${PURPLE_REGULAR}Deleting Queue: ${queue_name}.${RESET_TEXT}"
         queue_url=$(aws sqs get-queue-url --queue-name ${queue_name} --query 'QueueUrl' 2>&1)
         queue_url="${queue_url%\"}"
         queue_url="${queue_url#\"}" 

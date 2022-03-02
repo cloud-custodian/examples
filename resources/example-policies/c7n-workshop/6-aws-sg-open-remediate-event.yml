@@ -32,4 +32,4 @@ policies:
         ingress: matched
       - type: tag
         tags:
-          c7n-workshop: "it worked!"
+          c7n-workshop: "it worked again!"

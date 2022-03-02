@@ -94,6 +94,20 @@
             "Effect": "Allow",
             "Action": "sqs:ListQueues",
             "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "tag:getResources",
+                "tag:getTagKeys",
+                "tag:getTagValues",
+                "tag:TagResources",
+                "tag:UntagResources",
+                "resource-groups:*",
+                "cloudformation:DescribeStacks",
+                "cloudformation:ListStackResources"
+            ],
+            "Resource": "*"
         }
     ]
 }
