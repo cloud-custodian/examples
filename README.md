@@ -46,7 +46,7 @@ Currently, this repo supports:
 
 The Makefile contains a set of targets that automate common processes.
 
-Use `makefile help` to view a list of targets and descriptions of what they do.
+Use `make help` to view a list of targets and descriptions of what they do.
 
 At a high level, these make targets can be broken down into four categories:
 
@@ -62,7 +62,7 @@ At a high level, these make targets can be broken down into four categories:
 
 ## Setting Up Your Environment Within AWS CloudShell
 
-Since -- at the moment -- this project supports and requires access to an AWS account, we recommend using [AWS CLoudShell](https://aws.amazon.com/cloudshell/). CloudShell is a browser-based shell with AWS CLI access from the AWS Management Console. CloudShell provides 1GB of persistent storage and comes with helpful software and tools pre-installed.
+Since -- at the moment -- this project supports and requires access to an AWS account, we recommend using [AWS CloudShell](https://aws.amazon.com/cloudshell/). CloudShell is a browser-based shell with AWS CLI access from the AWS Management Console. CloudShell provides 1GB of persistent storage and comes with helpful software and tools pre-installed.
 
 1. With CloudShell loaded, clone this project into your directory of choice: `git clone https://github.com/cloud-custodian/examples.git`
 

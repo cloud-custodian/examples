@@ -24,8 +24,8 @@ function aws_cloudshell_install () {
     sudo yum install -y yum-utils # Install yum-utils so Terraform can be installed
     sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo 
     sudo yum -y install terraform
-    sudo amazon-linux-extras install epel # Install extras for things like tab completion, etc
-    sudo yum install bash-completion-extras
+    sudo amazon-linux-extras install epel -y # Install extras for things like tab completion, etc
+    sudo yum install bash-completion-extras -y
     echo
     echo "${PURPLE_REGULAR}Installation complete.${RESET_TEXT}"
     echo
