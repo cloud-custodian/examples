@@ -1,0 +1,35 @@
+policies:
+  - name: aws-sg-remediate
+    resource: aws.security-group
+    mode:
+      type: cloudtrail
+      role: arn:aws:iam::{account_id}:role/system/c7n-workshop-lambda-role
+      tags:
+        c7n-workshop: " "
+      events:
+        - source: ec2.amazonaws.com
+          event: AuthorizeSecurityGroupIngress
+          ids: "requestParameters.groupId"
+        - source: ec2.amazonaws.com
+          event: AuthorizeSecurityGroupEgress
+          ids: "requestParameters.groupId"
+        - source: ec2.amazonaws.com
+          event: RevokeSecurityGroupEgress
+          ids: "requestParameters.groupId"
+        - source: ec2.amazonaws.com
+          event: RevokeSecurityGroupIngress
+          ids: "requestParameters.groupId"
+    filters:
+      - or:
+          - type: ingress
+            Cidr:
+              value: "0.0.0.0/0"
+          - type: ingress
+            CidrV6:
+              value: "::/0"
+    actions:
+      - type: remove-permissions
+        ingress: matched
+      - type: tag
+        tags:
+          c7n-workshop: "it worked again!"

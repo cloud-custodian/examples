@@ -1,0 +1,11 @@
+policies:
+  - name: aws-sqs-uencrypted-remediate
+    resource: aws.sqs
+    filters:
+      - "KmsMasterKeyId": absent
+    actions:
+      - type: tag
+        tags:
+          c7n-workshop: "it worked"
+      - type: set-encryption
+        key: aws/sqs

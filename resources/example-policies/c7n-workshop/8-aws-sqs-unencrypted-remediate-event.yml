@@ -1,0 +1,23 @@
+policies:
+  - name: aws-sqs-not-encrypted
+    resource: aws.sqs
+    mode:
+      type: cloudtrail
+      role: arn:aws:iam::{account_id}:role/system/c7n-workshop-lambda-role
+      tags:
+        c7n-workshop: " "
+      events:
+        - source: sqs.amazonaws.com
+          event: CreateQueue
+          ids: "responseElements.queueUrl"
+        - source: sqs.amazonaws.com
+          event: SetQueueAttributes
+          ids: "requestParameters.queueUrl"
+    filters:
+      - "KmsMasterKeyId": absent
+    actions:
+      - type: tag
+        tags:
+          c7n-workshop: "it worked"
+      - type: set-encryption
+        key: aws/sqs
