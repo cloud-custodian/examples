@@ -188,8 +188,8 @@ function describe_queue () {
     queue_url=$(aws sqs get-queue-url --queue-name ${answer} --query 'QueueUrl' 2>&1)
     queue_url="${queue_url%\"}"
     queue_url="${queue_url#\"}" 
-    aws sqs list-queue-tags --queue-url ${queue_url}
-    aws sqs get-queue-attributes --queue-url ${queue_url} --attribute-names KmsMasterKeyId 
+    aws sqs list-queue-tags --queue-url ${queue_url} --output table
+    aws sqs get-queue-attributes --queue-url ${queue_url} --attribute-names KmsMasterKeyId --output table
 }
 
 function describe_tags () {
