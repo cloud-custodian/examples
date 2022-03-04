@@ -12,7 +12,8 @@ function install () {
 	echo "${PURPLE_REGULAR}Installing dependencies . . .${RESET_TEXT}"
 	echo
 	poetry install
-	echo "${PURPLE_REGULAR}Installation complete. Use ${PURPLE_BOLD}'poetry shell'${PURPLE_REGULAR} to activate a virtual environment.${RESET_TEXT}"
+    echo
+	echo "${PURPLE_BOLD}Installation complete. Use ${PURPLE_BOLD}'poetry shell'${PURPLE_BOLD} to activate a virtual environment.${RESET_TEXT}"
 	echo
 }
 
@@ -189,7 +190,15 @@ function describe_queue () {
     queue_url="${queue_url%\"}"
     queue_url="${queue_url#\"}" 
     aws sqs list-queue-tags --queue-url ${queue_url} --output table
-    aws sqs get-queue-attributes --queue-url ${queue_url} --attribute-names KmsMasterKeyId --output table
+    aws_command=$(aws sqs get-queue-attributes --queue-url ${queue_url} --attribute-names KmsMasterKeyId --output table)
+    if [ -z "$aws_command" ];
+        then
+        echo
+        echo "No KmsMasterKeyId found for this queue."
+        echo
+        else
+        echo "$aws_command"
+    fi
 }
 
 function describe_tags () {
