@@ -34,6 +34,18 @@ function aws_cloudshell_install () {
 
 # Demo infrastructure
 function demo_infra_provision () {
+    PROJECT="$1"
+    
+    if [ -z "$PROJECT" ]; then
+        echo "Must specify 1 argument as the directory in resources/example-policies-infrastructure/"
+        exit 1
+    fi
+    
+    if [ ! -d resources/example-policies-infrastructure/$PROJECT ]; then
+        echo "$PROJECT is not a valid example policy infrastructure"
+        exit 1
+    fi
+
     echo
     echo "${PURPLE_REGULAR}Running terraform apply. See repo ${PURPLE_BOLD}README ${PURPLE_REGULAR}for more details.${RESET_TEXT}"
     echo
@@ -50,11 +62,12 @@ function mugc_run () {
     echo
     poetry run python helpers/mugc.py resources/example-policies/${1}/*.yml --present --dryrun
     output=$(poetry run python helpers/mugc.py resources/example-policies/${1}/*.yml --present --dryrun 2>&1)
+    
     if [ "${output}" ];
         then
         echo
-        read -p "${PURPLE_REGULAR}Type ${PURPLE_BOLD}'YES' ${PURPLE_REGULAR}to proceed with mugc run. " answer
-        if [ "${answer}" = 'YES' ];
+        read -p "${PURPLE_REGULAR}Type ${PURPLE_BOLD}'yes' ${PURPLE_REGULAR}to proceed with mugc run. " answer
+        if [ "${answer}" = 'yes' ];
             then
             echo
             echo "${PURPLE_REGULAR}Running tools.ops.mugc. See repo ${PURPLE_BOLD}README ${PURPLE_REGULAR}for more details.${RESET_TEXT}"
@@ -106,10 +119,10 @@ function update_security_group () {
 
 function delete_security_group () {
     read -p "${PURPLE_REGULAR}Enter group ID to delete: " group_id
-    read -p "${PURPLE_REGULAR}This will permanently delete Security Group ${group_id}. This action cannot be reversed. Type 'YES' to proceed with deletion. " answer 
+    read -p "${PURPLE_REGULAR}This will permanently delete Security Group ${group_id}. This action cannot be reversed. Type 'yes' to proceed with deletion. " answer 
     echo
 
-    if [ "${answer}" = "YES" ];
+    if [ "${answer}" = "yes" ];
         then
         echo "${PURPLE_REGULAR}Deleting Security Group: ${group_id}.${RESET_TEXT}"
         aws ec2 delete-security-group --group-id ${group_id}
@@ -120,10 +133,10 @@ function delete_security_group () {
 
 function delete_queue () {
     read -p "${PURPLE_REGULAR}Enter a queue name to delete. Options are {c7n-workshop-queue}: " queue_name
-    read -p "${PURPLE_REGULAR}This will permanently delete Queue ${queue_name}. This action cannot be reversed. Type 'YES' to proceed with deletion. " answer 
+    read -p "${PURPLE_REGULAR}This will permanently delete Queue ${queue_name}. This action cannot be reversed. Type 'yes' to proceed with deletion. " answer 
     echo
 
-    if [ "${answer}" = "YES" ];
+    if [ "${answer}" = "yes" ];
         then
         echo "${PURPLE_REGULAR}Deleting Queue: ${queue_name}.${RESET_TEXT}"
         queue_url=$(aws sqs get-queue-url --queue-name ${queue_name} --query 'QueueUrl' 2>&1)
@@ -137,9 +150,9 @@ function delete_queue () {
 
 function describe_all_resources () {
     echo
-    read -p "${PURPLE_REGULAR}Note! Running this will ${PURPLE_BOLD}display account numbers${PURPLE_REGULAR}. Type 'YES' to proceed. " answer
-
-    if [ "${answer}" = "YES" ];
+    read -p "${PURPLE_REGULAR}Note! Running this will ${PURPLE_BOLD}display account numbers${PURPLE_REGULAR}. Type 'yes' to proceed. " answer
+    
+    if [ "${answer}" = "yes" ];
         then
         read -p "${PURPLE_REGULAR}Enter a tag to view all resources for. Options are {c7n-101, c7n-workshop}: " answer
         aws resourcegroupstaggingapi get-resources --tag-filters Key=${answer} --query 'ResourceTagMappingList[*].{ARN: ResourceARN,tagKey:Tags[?Key==`'${answer}'`]|[0].Key,tagValue:Tags[?Key==`'${answer}'`]|[0].Value}' --output table

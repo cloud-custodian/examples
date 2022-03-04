@@ -38,18 +38,23 @@ workshop-custodian-commands: ## Print out the Cloud Custodian commands to run th
 
 #AWS CLI operations
 stop-instance: ## Specify an EC2 instance to stop
+	make describe-ec2s
 	source helpers/setup.sh && stop_instance
 
 start-instance: ## Specify an EC2 instance to start
+	make describe-ec2s
 	source helpers/setup.sh && start_instance
 
 update-security-group: ## Specify a security group to update
+	make describe-security-groups
 	source helpers/setup.sh && update_security_group
 
 delete-security-group: ## Specify a security group to delete
+	make describe-security-groups
 	source helpers/setup.sh && delete_security_group
 
 delete-queue: ## Specify a queue to delete
+	make describe-queues
 	source helpers/setup.sh && delete_queue
 
 describe-all-resources: ## Specify a tag to view all resources for -- displays account number so use with discretion
@@ -71,4 +76,5 @@ describe-queues: ## Specify a queue to view details of
 	source helpers/setup.sh && describe_queue
 
 describe-ec2-tags: ## Specify an EC2 to view tags for
+	make describe-ec2s
 	source helpers/setup.sh && describe_tags

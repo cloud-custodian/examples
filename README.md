@@ -66,15 +66,15 @@ Since -- at the moment -- this project supports and requires access to an AWS ac
 
 1. With CloudShell loaded, clone this project into your directory of choice: `git clone https://github.com/cloud-custodian/examples.git`
 
-2. Navigate to your new `examples` directory and use `make install-cloudshell` to download and install the binaries and dependencies you will need to run the example Cloud Custodian policies. Please note that installation prompts for user input.
+2. Navigate to your new `examples` directory and use `make install-cloudshell` to download and install the binaries and dependencies you will need to run the example Cloud Custodian policies.
 
-3. Once installation is complete, use `poetry shell` to activate a virtual environment.
+3. Once installation is complete, use `poetry shell` to activate a virtual environment. (Use `exit` to deactivate your virtual environment.)
 
 4. In your virtual environment, run `custodian -h` to verify successful installation of Cloud Custodian.
 
 ## Provisioning Sandbox Infrastructure
 
-1. Run `make 101-infra-provision` to deploy sandbox AWS infrastructure to test Cloud Custodian policies with. Please note that Terraform apply prompts for user input.
+1. Run `make 101-infra-provision` to deploy sandbox AWS infrastructure to test Cloud Custodian policies with. Please note that Terraform prompts for user input.
 
 2. Check to make sure your infrastructure deployed correctly with `make describe-ec2s`. When prompted for a tag to filter by, use `c7n-101`. You should see output that looks something like this:
 

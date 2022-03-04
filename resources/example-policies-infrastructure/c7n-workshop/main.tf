@@ -24,7 +24,7 @@ resource "aws_sqs_queue" "c7n-workshop-queue" {
 
   tags = {
     "c7n-workshop" : " "
-    "Name" : "c7n-workshop-sqs"
+    "Name" : "c7n-workshop-queue"
   }
 }
 
