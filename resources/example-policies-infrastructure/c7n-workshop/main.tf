@@ -47,9 +47,25 @@ resource "aws_security_group" "c7n-workshop-security-group" {
   }
 }
 
+# AMI to use for EC2 instances
+data "aws_ami" "amazon-linux-2" {
+  most_recent = true
+  owners = ["amazon"]
+  
+  filter {
+    name   = "owner-alias"
+    values = ["amazon"]
+ }
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm*"]
+  }
+}
+
 # Creates an EC2
 resource "aws_instance" "c7n-workshop-ec2" {
-  ami           = "ami-00eb20669e0990cb4"
+  ami           = "${data.aws_ami.amazon-linux-2.id}"
   instance_type = "t2.micro"
   count         = 1
 
