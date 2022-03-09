@@ -34,6 +34,10 @@ In order to use this repo, you will need:
 
 * [Terraform](https://www.terraform.io/) to provision AWS infrastructure
 
+* [Appropriate read and write permissions in AWS](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_understand-policy-summary-access-level-summaries.html) to provision the infrastructure outlined in the Terraform main files
+
+* A [default VPC](https://docs.aws.amazon.com/vpc/latest/userguide/default-vpc.html) is not required, however, since no VPC is specified in the Terraform main files, if your AWS account does not have a designated default VPC, you will encounter an error when provisioning infrastructure (see **Troubleshooting** below for more information)
+
 * [AWS CloudShell](https://aws.amazon.com/cloudshell/) is not required, but strongly recommended
 
 # Support
@@ -133,8 +137,6 @@ Since -- at the moment -- this project supports and requires access to an AWS ac
 
 * Use `make help` to explore the other make targets available to you. Many of the AWS CLI wrapper targets provide an easy way to view your AWS infrastructure without having to recall complex command line strings.
 
-* If you are using `make {webinar}-infra-provision` (and therefore Terraform) to trigger event policies, be aware that you may encounter duplication errors. These errors are not necessarily a hindrance, but may impact Terraform state management.  
-
 * Check out [cloudcustodian.io](https://cloudcustodian.io/) for more information about Cloud Custodian.
 
 * Come ask questions on [Gitter](gitter.im/cloud-custodian) and in our [bi-weekly community meetings](https://www.youtube.com/playlist?list=PLJ2Un8H_N5uBeAAWK95SnWvm_AuNJ8q2x).
@@ -142,3 +144,33 @@ Since -- at the moment -- this project supports and requires access to an AWS ac
 * Join [our webinars](https://app.livestorm.co/stacklet-io) to learn more.
 
 * And subscribe to [our Google Group](https://groups.google.com/g/cloud-custodian?pli=1).
+
+# Troubleshooting
+
+## Error when running `make {webinar}-infra-provision`: VPCIdNotSpecified
+
+```
+Error: Error launching source instance: VPCIdNotSpecified: No default VPC for this user. GroupName is only supported for EC2-Classic and default VPC.
+```
+
+This usually happens when there is no default VPC configured for your AWS account. Some cloud resources -- like EC2 instances -- require a VPC in order to be deployed. If no VPC is configured for deployment and there is no default VPC to fall back on, then AWS cannot launch an EC2 instance. 
+
+Your options are to either configure a default VPC for your account or to specify a VPC or subnet for the EC2 instance resources in the appropriate Terraform file.
+
+Or you can remove the EC2 instance resources from the Terraform file completely. Doing so will render any policies concerning EC2 instances irrelevant.
+
+Please refer to the [AWS VPC](https://docs.aws.amazon.com/vpc/latest/userguide/default-vpc.html) and [Terraform instance](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) documentation for more information.
+
+## Error when running `make {webinar}-infra-provision`: EntityAlreadyExists 
+
+```
+Error: failed creating IAM Role (<role-name>): EntityAlreadyExists: Role with name <role-name> already exists.
+```
+
+This usually happens when your Terraform state management becomes misaligned. Terraform is trying to create a new resource -- in this case, a a new IAM role -- but this particular IAM role already exists and even if Terraform is the one that created the role, it has somehow lost track of it. Since two roles cannot have the same name, you receive an error. 
+
+If you run `make describe-roles` you will likely discover that you have the named role in your inventory. While this will not hinder your ability to run Cloud Custodian policies, it will interfere with `make {webinar}-infra-destroy`, potentially leaving the responsibility to you to manually delete the role once you are done with your sandbox.
+
+Your options are to either remember to manually delete the role or to import the forgotten resource back into Terraform's state.
+
+Please refer to the [Terraform import documentation](https://www.terraform.io/cli/import/usage) for more information.
