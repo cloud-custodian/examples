@@ -51,7 +51,8 @@ custodian report resources/example-policies/c7n-workshop/6-aws-sg-open-remediate
 # to run policy with verbose and dryrun flags :
 custodian run resources/example-policies/c7n-workshop/7-aws-sg-auto-tag-event.yml -s resources/example-policies/c7n-workshop/policy-execution-output --verbose --dryrun
 
-# there is no report command for this because the report command does not support policy files with different resource types
+# to view a formatted report with customized tag field :
+custodian report resources/example-policies/c7n-workshop/7-aws-sg-auto-tag-event.yml -s resources/example-policies/c7n-workshop/policy-execution-output --field tag:c7n-workshop='tag:c7n-workshop' --format grid
 
 
 ## 8-aws-sqs-unencrypted-remediate-event ##
