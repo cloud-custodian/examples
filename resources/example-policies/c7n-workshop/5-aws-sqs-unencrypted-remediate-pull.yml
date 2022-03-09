@@ -2,6 +2,7 @@ policies:
   - name: aws-sqs-uencrypted-remediate
     resource: aws.sqs
     filters:
+      - tag:c7n-workshop: present
       - "KmsMasterKeyId": absent
     actions:
       - type: tag

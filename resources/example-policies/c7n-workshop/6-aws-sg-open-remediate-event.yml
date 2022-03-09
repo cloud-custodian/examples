@@ -20,13 +20,15 @@ policies:
           event: RevokeSecurityGroupIngress
           ids: "requestParameters.groupId"
     filters:
-      - or:
-          - type: ingress
-            Cidr:
-              value: "0.0.0.0/0"
-          - type: ingress
-            CidrV6:
-              value: "::/0"
+      - and:
+          - tag:c7n-workshop: present
+          - or:
+              - type: ingress
+                Cidr:
+                  value: "0.0.0.0/0"
+              - type: ingress
+                CidrV6:
+                  value: "::/0"
     actions:
       - type: remove-permissions
         ingress: matched

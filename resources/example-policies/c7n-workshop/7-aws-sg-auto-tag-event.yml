@@ -10,6 +10,8 @@ policies:
         - source: ec2.amazonaws.com
           event: CreateSecurityGroup
           ids: "responseElements.groupId"
+    filters:
+      - tag:c7n-workshop: present
     actions:
       - type: auto-tag-user
         tag: CreatorName
@@ -37,49 +39,11 @@ policies:
         - source: ec2.amazonaws.com
           event: RevokeSecurityGroupIngress
           ids: "requestParameters.groupId"
+    filters:
+      - tag:c7n-workshop: present
     actions:
       - type: auto-tag-user
         tag: LastModifiedByUser
-      - type: tag
-        tags:
-          c7n-workshop: "it worked!"
-
-  - name: aws-ec2-start-instance-auto-tag-user
-    resource: aws.ec2
-    mode:
-      type: cloudtrail
-      role: arn:aws:iam::{account_id}:role/system/c7n-workshop-lambda-role
-      tags:
-        c7n-workshop: " "
-      events:
-        - source: ec2.amazonaws.com
-          event: StartInstances
-          ids: "responseElements.instancesSet.items[].instanceId"
-    description: |
-      Tags the last user to start the EC2 instance
-    actions:
-      - type: auto-tag-user
-        tag: ServerStartedBy
-      - type: tag
-        tags:
-          c7n-workshop: "it worked!"
-
-  - name: aws-ec2-stopped-instance-auto-tag-user
-    resource: ec2
-    mode:
-      type: cloudtrail
-      role: arn:aws:iam::{account_id}:role/system/c7n-workshop-lambda-role
-      tags:
-        c7n-workshop: " "
-      events:
-        - source: ec2.amazonaws.com
-          event: StopInstances
-          ids: "responseElements.instancesSet.items[].instanceId"
-    description: |
-      Tags the user which last stopped the EC2 instance.
-    actions:
-      - type: auto-tag-user
-        tag: ServerStoppedBy
       - type: tag
         tags:
           c7n-workshop: "it worked!"

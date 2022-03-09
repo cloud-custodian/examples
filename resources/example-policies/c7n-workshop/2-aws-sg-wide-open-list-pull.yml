@@ -2,6 +2,7 @@ policies:
   - name: aws-sg-wide-open-list
     resource: aws.security-group
     filters:
+      - tag:c7n-workshop: present
       - or:
           - type: ingress
             Cidr:

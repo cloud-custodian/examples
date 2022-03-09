@@ -14,6 +14,7 @@ policies:
           event: SetQueueAttributes
           ids: "requestParameters.queueUrl"
     filters:
+      - tag:c7n-workshop: present
       - "KmsMasterKeyId": absent
     actions:
       - type: tag
