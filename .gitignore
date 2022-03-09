@@ -1,6 +1,7 @@
 # project files and directories
 resources/example-policies/c7n-101/policy-execution-output/*
 resources/example-policies/c7n-workshop/policy-execution-output/*
+.terraform-plugin-cache
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
