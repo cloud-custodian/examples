@@ -2,6 +2,7 @@ policies:
   - name: aws-sg-wide-open-remediate
     resource: aws.security-group
     filters:
+      - tag:c7n-102: present
       - or:
           - type: ingress
             Cidr:
