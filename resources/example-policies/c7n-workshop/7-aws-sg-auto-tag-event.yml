@@ -1,24 +1,4 @@
 policies:
-  - name: aws-security-group-auto-tag-creator
-    resource: security-group
-    mode:
-      type: cloudtrail
-      role: arn:aws:iam::{account_id}:role/system/c7n-workshop-lambda-role
-      tags:
-        c7n-workshop: " "
-      events:
-        - source: ec2.amazonaws.com
-          event: CreateSecurityGroup
-          ids: "responseElements.groupId"
-    filters:
-      - tag:c7n-workshop: present
-    actions:
-      - type: auto-tag-user
-        tag: CreatorName
-      - type: tag
-        tags:
-          c7n-workshop: "it worked!"
-
   - name: aws-security-group-auto-tag-modifier
     resource: security-group
     mode:
