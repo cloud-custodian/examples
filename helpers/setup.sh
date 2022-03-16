@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# vim: set softtabstop=4 shiftwidth=4 expandtab:
+
 # Text color variables
 PURPLE_BOLD=$'\e[1;95m'
 PURPLE_REGULAR=$'\e[0;95m'
@@ -32,9 +34,28 @@ function aws_cloudshell_install () {
     echo
 }
 
+function configure_terraform_cache () {
+    # Cache Terraform provider files in a common directory, so we
+    # avoid repeat downloads when provisioning multiple sets of
+    # resources.
+
+    if [[ "$USER" == "cloudshell-user" ]]; then
+        # Persistent storage in an AWS CloudShell environment is
+        # limited to 1GB. Keep the Terraform cache in an ephemeral
+        # directory that won't contribute to that limit.
+        export TF_PLUGIN_CACHE_DIR="/tmp/terraform-plugin-cache"
+    else
+        export TF_PLUGIN_CACHE_DIR="$(pwd)/.terraform-plugin-cache"
+    fi
+
+    mkdir -p "$TF_PLUGIN_CACHE_DIR"
+}
+
 
 # Demo infrastructure
 function demo_infra_provision () {
+    configure_terraform_cache
+
     PROJECT="$1"
     
     if [ -z "$PROJECT" ]; then
@@ -87,6 +108,8 @@ function mugc_run () {
 }
 
 function demo_infra_destroy () {
+    configure_terraform_cache
+
     echo
     echo "${PURPLE_REGULAR}Running terraform destroy. See repo ${PURPLE_BOLD}README ${PURPLE_REGULAR}for more details."
     echo
