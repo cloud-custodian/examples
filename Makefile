@@ -29,6 +29,22 @@ workshop-infra-provision: ## Use Terraform to provision workshop demo infrastruc
 workshop-infra-destroy: ## Use Terraform and c7n mugc to destroy workshop demo infrastructure
 	source helpers/setup.sh && demo_infra_destroy c7n-workshop
 
+102-infra-provision: ## Use Terraform to provision 102 demo infrastructure
+	terraform -chdir=resources/example-policies-infrastructure/c7n-102/demo-infra init
+	source helpers/setup.sh && demo_infra_provision c7n-102/account-1
+	source helpers/setup.sh && demo_infra_provision c7n-102/account-2
+
+102-account-1-infra-provision: ## Use Terraform to provision 102 demo infrastructure
+	terraform -chdir=resources/example-policies-infrastructure/c7n-102/demo-infra init
+	source helpers/setup.sh && demo_infra_provision c7n-102/account-1
+
+102-account-2-infra-provision: ## Use Terraform to provision 102 demo infrastructure
+	terraform -chdir=resources/example-policies-infrastructure/c7n-102/demo-infra init
+	source helpers/setup.sh && demo_infra_provision c7n-102/account-2
+
+lambda-destroy: ## Use c7n mugc to destroy any Custodian created Lambdas
+	source helpers/setup.sh && mugc_run
+
 
 # Cloud Custodian command help per webinar
 101-custodian-commands: ## Print out the Cloud Custodian commands to run policies
@@ -62,21 +78,24 @@ delete-queue: ## Specify a queue to delete
 describe-all-resources: ## Specify a tag to view all resources for -- displays account number so use with discretion
 	source helpers/setup.sh && describe_all_resources
 
-describe-ec2s: ## Specify a tag to view all EC2 instances for
-	source helpers/setup.sh && describe_ec2s	
+describe-ec2-instances: ## Specify a tag to view all EC2 instances for
+	source helpers/setup.sh && describe_ec2_instances	
 
 describe-lambdas: ## List all Lamdbda functions with names prefixed with "custodian"
 	source helpers/setup.sh && describe_lambdas
 
+describe-queue: ## Specify a queue to view details of
+	source helpers/setup.sh && describe_queue
+
 describe-roles: ## Specify a role to view
 	source helpers/setup.sh && describe_roles
+
+describe-s3-buckets: ## Specify a tag to view all S3 buckets for
+	source helpers/setup.sh && describe_s3_buckets
 
 describe-security-groups: ## Specify a tag to view all security groups for
 	source helpers/setup.sh && describe_security_groups
 
-describe-queues: ## Specify a queue to view details of
-	source helpers/setup.sh && describe_queue
-
 describe-ec2-tags: ## Specify an EC2 to view tags for
-	make describe-ec2s
-	source helpers/setup.sh && describe_tags
+	make describe-ec2-instances
+	source helpers/setup.sh && describe_instance_tags
