@@ -42,6 +42,12 @@ workshop-infra-destroy: ## Use Terraform and c7n mugc to destroy workshop demo i
 	terraform -chdir=resources/example-policies-infrastructure/c7n-102/demo-infra init
 	source helpers/setup.sh && demo_infra_provision c7n-102/account-2
 
+account-1-infra-destroy: ## Use Terraform and c7n mugc to destroy workshop demo infrastructure
+	source helpers/setup.sh && demo_infra_destroy c7n-102/account-1
+
+account-2-infra-destroy: ## Use Terraform and c7n mugc to destroy workshop demo infrastructure
+	source helpers/setup.sh && demo_infra_destroy c7n-102/account-2
+
 lambda-destroy: ## Use c7n mugc to destroy any Custodian created Lambdas
 	source helpers/setup.sh && mugc_run
 
@@ -56,12 +62,16 @@ workshop-custodian-commands: ## Print out the Cloud Custodian commands to run th
 
 #AWS CLI operations
 stop-instance: ## Specify an EC2 instance to stop
-	make describe-ec2s
+	make describe-ec2-instances
 	source helpers/setup.sh && stop_instance
 
 start-instance: ## Specify an EC2 instance to start
-	make describe-ec2s
+	make describe-ec2-instances
 	source helpers/setup.sh && start_instance
+
+delete-lambda: ## Specify a Lambda to delete
+	make describe-lambdas
+	source helpers/setup.sh && delete_lambda
 
 update-security-group: ## Specify a security group to update
 	make describe-security-groups
@@ -99,3 +109,4 @@ describe-security-groups: ## Specify a tag to view all security groups for
 describe-ec2-tags: ## Specify an EC2 to view tags for
 	make describe-ec2-instances
 	source helpers/setup.sh && describe_instance_tags
+
