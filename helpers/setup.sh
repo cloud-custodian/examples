@@ -12,7 +12,10 @@ QUEUE_NAMES="{c7n-workshop-queue, c7n-102-mailer-queue}"
 ROLE_NAMES="{c7n-101-lambda-iam-role, c7n-workshop-lambda-iam-role, c7n-102-exeuction-role}"
 PROFILE_NAMES="{source, destination}"
 
-ECHO_TEXT="Querying AWS\n.\n. .\n. . ."
+ECHO_TEXT="${PURPLE_REGULAR}Querying AWS
+.
+. .
+. . ."
 
 # Installation
 function install () {
@@ -134,21 +137,45 @@ function demo_infra_destroy () {
 # AWS CLI wrapper functions
 function stop_instance () {
     read -p "${PURPLE_REGULAR}Enter an instance ID to stop: " answer
-    echo $ECHO_TEXT
+    echo "$ECHO_TEXT"
     echo aws ec2 stop-instances --instance-ids ${answer}
     aws ec2 stop-instances --instance-ids ${answer}
 }
 
 function start_instance () {
     read -p "${PURPLE_REGULAR}Enter an instance ID to start: " answer
-    echo $ECHO_TEXT
+    echo "$ECHO_TEXT"
     echo aws ec2 start-instances --instance-ids ${answer}
     aws ec2 start-instances --instance-ids ${answer}
 }
 
+function delete_lambda () {
+    read -p "${PURPLE_REGULAR}Enter lambda to delete: " lambda
+    read -p "${PURPLE_REGULAR}Enter account profile if not default: " account
+
+    read -p "${PURPLE_REGULAR}This will permanently delete Lambda ${lambda}. This action cannot be reversed. Type 'yes' to proceed with deletion. " answer 
+    echo
+
+    if [ "${answer}" = "yes" ]; then
+        if [ "$account" ]; then
+            echo "${PURPLE_REGULAR}Deleting Lambda: ${lambda}."
+            echo "$ECHO_TEXT"
+            echo aws lambda delete-function --function-name ${lambda} --profile ${account}
+            aws lambda delete-function --function-name ${lambda} --profile ${account}
+        else
+            echo "$ECHO_TEXT"
+            echo aws lambda delete-function --function-name ${lambda}
+            aws lambda delete-function --function-name ${lambda}
+            ${RESET_TEXT}
+        fi
+    else
+        echo "User input: ${answer}. Skipping.${RESET_TEXT}"
+    fi 
+}
+
 function update_security_group () {
     read -p "${PURPLE_REGULAR}Enter group ID to update: " answer
-    echo $ECHO_TEXT
+    echo "$ECHO_TEXT"
     echo aws ec2 authorize-security-group-egress --group-id ${answer} --ip-permissions IpProtocol=-1,FromPort=0,ToPort=0,IpRanges=[{CidrIp=0.0.0.0/0}]
     aws ec2 authorize-security-group-egress --group-id ${answer} --ip-permissions IpProtocol=-1,FromPort=0,ToPort=0,IpRanges=[{CidrIp=0.0.0.0/0}]
 }
@@ -162,11 +189,11 @@ function delete_security_group () {
     if [ "${answer}" = "yes" ]; then
         if [ "$account" ]; then
             echo "${PURPLE_REGULAR}Deleting Security Group: ${group_id}."
-            echo $ECHO_TEXT
+            echo "$ECHO_TEXT"
             echo aws ec2 delete-security-group --group-id ${group_id} --profile ${account}
             aws ec2 delete-security-group --group-id ${group_id} --profile ${account}
         else
-            echo $ECHO_TEXT
+            echo "$ECHO_TEXT"
             echo aws ec2 delete-security-group --group-id ${group_id}
             aws ec2 delete-security-group --group-id ${group_id}
             ${RESET_TEXT}
@@ -186,7 +213,7 @@ function delete_queue () {
         queue_url=$(aws sqs get-queue-url --queue-name ${queue_name} --query 'QueueUrl' 2>&1)
         queue_url="${queue_url%\"}"
         queue_url="${queue_url#\"}"
-        echo $ECHO_TEXT
+        echo "$ECHO_TEXT"
         echo aws sqs delete-queue --queue-url ${queue_name}  
         aws sqs delete-queue --queue-url ${queue_url}
     else
@@ -200,7 +227,7 @@ function describe_all_resources () {
     
     if [ "${answer}" = "yes" ]; then
         read -p "${PURPLE_REGULAR}Enter a tag to view all resources for. Options are ${WEBINAR_TAGS}: " answer
-        echo $ECHO_TEXT
+        echo "$ECHO_TEXT"
         echo aws resourcegroupstaggingapi get-resources --tag-filters Key=${answer} --query 'ResourceTagMappingList[*].{ARN: ResourceARN,tagKey:Tags[?Key==`'${answer}'`]|[0].Key,tagValue:Tags[?Key==`'${answer}'`]|[0].Value}' --output table
         aws resourcegroupstaggingapi get-resources --tag-filters Key=${answer} --query 'ResourceTagMappingList[*].{ARN: ResourceARN,tagKey:Tags[?Key==`'${answer}'`]|[0].Key,tagValue:Tags[?Key==`'${answer}'`]|[0].Value}' --output table
     else
@@ -210,15 +237,23 @@ function describe_all_resources () {
 
 function describe_ec2_instances () {
     read -p "${PURPLE_REGULAR}Enter a tag to filter by. Options are ${WEBINAR_TAGS}: " answer
-    echo $ECHO_TEXT
+    echo "$ECHO_TEXT"
     echo aws ec2 describe-instances --filters "Name=tag-key,Values=$answer" --query 'Reservations[*].Instances[*].{Instance:InstanceId,tagKey:Tags[?Key==`'${answer}'`]|[0].Key,tagValue:Tags[?Key==`'${answer}'`]|[0].Value,State:State.Name}' --output table 
     aws ec2 describe-instances --filters "Name=tag-key,Values=$answer" --query 'Reservations[*].Instances[*].{Instance:InstanceId,tagKey:Tags[?Key==`'${answer}'`]|[0].Key,tagValue:Tags[?Key==`'${answer}'`]|[0].Value,State:State.Name}' --output table
 }
 
 function describe_lambdas () {
-    echo $ECHO_TEXT
-    echo aws lambda list-functions --query 'Functions[?contains(FunctionName, `custodian`) == `true`].{Name:FunctionName}' --output table
-    aws lambda list-functions --query 'Functions[?contains(FunctionName, `custodian`) == `true`].{Name:FunctionName}' --output table
+    read -p "${PURPLE_REGULAR}Enter an account to view lambdas in (optional): " account
+    
+    if [ "$account" ]; then
+        echo "$ECHO_TEXT"
+        echo aws lambda list-functions --query 'Functions[?contains(FunctionName, `custodian`) == `true`].{Name:FunctionName}' --output table --profile ${account}
+        aws lambda list-functions --query 'Functions[?contains(FunctionName, `custodian`) == `true`].{Name:FunctionName}' --output table --profile ${account}
+    else
+        echo "$ECHO_TEXT"
+        echo aws lambda list-functions --query 'Functions[?contains(FunctionName, `custodian`) == `true`].{Name:FunctionName}' --output table
+        aws lambda list-functions --query 'Functions[?contains(FunctionName, `custodian`) == `true`].{Name:FunctionName}' --output table
+    fi
 }
 
 function describe_roles () {
@@ -239,7 +274,7 @@ function describe_queue () {
     queue_url="${queue_url%\"}"
     queue_url="${queue_url#\"}"
     read -p "${PURPLE_REGULAR}Enter an account to view queue in (optional): " account
-    echo $ECHO_TEXT
+    echo "$ECHO_TEXT"
     if [ "$account" ]; then
         echo aws sqs get-queue-url --queue-name ${answer} --query 'QueueUrl' 
         echo aws sqs list-queue-tags --queue-url ${answer} --output table --profile ${account}
@@ -269,7 +304,7 @@ function describe_queue () {
 
 function describe_roles () {
     read -p "${PURPLE_REGULAR}Enter a role name to view. Options are ${ROLE_NAMES}: " answer
-    echo $ECHO_TEXT
+    echo "$ECHO_TEXT"
     echo aws iam get-role --role-name ${answer} --query 'Role.{Name:RoleName,Tags:Tags[*]}' --output table
     aws iam get-role --role-name ${answer} --query 'Role.{Name:RoleName,Tags:Tags[*]}' --output table
 }
@@ -277,7 +312,7 @@ function describe_roles () {
 function describe_s3_buckets () {
     read -p "${PURPLE_REGULAR}Enter a tag to view all buckets for for. Options are ${WEBINAR_TAGS}: " answer
     read -p "${PURPLE_REGULAR}Enter an account to view buckets in (optional): " account
-    echo $ECHO_TEXT
+    echo "$ECHO_TEXT"
 
     if [ "$account" ]; then
         echo aws resourcegroupstaggingapi get-resources --tag-filters Key=${answer} --resource-type-filters s3:bucket --query 'ResourceTagMappingList[*].{Account:`'${account}'`,ARN: ResourceARN,tagKey:Tags[?Key==`'${answer}'`]|[0].Key,tagValue:Tags[?Key==`'${answer}'`]|[0].Value}' --output table --profile ${account}
@@ -291,7 +326,7 @@ function describe_s3_buckets () {
 function describe_security_groups () {
     read -p "${PURPLE_REGULAR}Enter a tag to filter by. Options are ${WEBINAR_TAGS}: " answer
     read -p "${PURPLE_REGULAR}Enter an account to view security groups in (optional): " account
-    echo $ECHO_TEXT
+    echo "$ECHO_TEXT"
     
     if [ "$account" ]; then
         echo aws ec2 describe-security-groups --filters Name=tag-key,Values=${answer} --query 'SecurityGroups[*].{Account:`'${account}'`,groupID:GroupId,GroupName:GroupName,ipRanges:IpPermissions[0].IpRanges[0].CidrIp,ipV6Ranges:IpPermissions[0].Ipv6Ranges[0].CidrIpv6,Tags:Tags[*]}' --output table --profile ${account}
@@ -304,7 +339,7 @@ function describe_security_groups () {
 
 function describe_instance_tags () {
     read -p "${PURPLE_REGULAR}Enter an instance ID to view tags for: " answer
-    echo $ECHO_TEXT
+    echo "$ECHO_TEXT"
     echo aws ec2 describe-tags --filters "Name=resource-id,Values=${answer}" --query 'Tags[*].{ResourceID:ResourceId,ResourceType:ResourceType,tagKey:Key,tagValue:Value}' --output table
     aws ec2 describe-tags --filters "Name=resource-id,Values=${answer}" --query 'Tags[*].{ResourceID:ResourceId,ResourceType:ResourceType,tagKey:Key,tagValue:Value}' --output table
 }
