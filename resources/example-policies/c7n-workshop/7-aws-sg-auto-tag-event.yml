@@ -1,4 +1,33 @@
 policies:
+  - name: aws-security-group-auto-tag-creator
+    resource: aws.security-group
+    mode:
+      type: cloudtrail
+      role: arn:aws:iam::{account_id}:role/system/c7n-102-lambda-role
+      tags:
+        c7n-102: " "
+      events:
+        - source: ec2.amazonaws.com
+          event: CreateSecurityGroup
+          ids: "responseElements.groupId"
+    filters:
+      - and:
+          - tag:c7n-102: present
+          - or:
+              - type: ingress
+                Cidr:
+                  value: "0.0.0.0/0"
+              - type: ingress
+                CidrV6:
+                  value: "::/0"
+    actions:
+      - type: auto-tag-user
+        tag: CreatorName
+      - type: remove-permissions
+        ingress: matched
+      - type: tag
+        tags:
+          c7n-workshop: "it worked again!"
   - name: aws-security-group-auto-tag-modifier
     resource: security-group
     mode:
