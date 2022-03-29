@@ -279,7 +279,7 @@ If you don’t want to leave a bunch of test EC2s littering your AWS estate, you
 * In Cloud Custodian, you can check if a tag is merely present. So instead of `tag:c7n-tutorial: "my-first-policy-pull"` you can use `tag:c7n-tutorial: present`.
 * You can explore which filters and actions are available for a resource by running `custodian schema <resource>.actions`. So, for example, in order to see all actions available for an EC2 instance, you would run `custodian schema ec2.actions`.
 * Remember to use `custodian validate` to make sure your policy file is written correctly and the `--dryrun` flag and `custodian report` command to verify your policy will do what you think it does before committing to any irreversible actions.
-* You can find the answer [here](tutorials/c7n-tutorial-cleanup.yml).
+* You can find the answer [here](c7n-tutorial-cleanup.yml).
 
 # Further Reading and Resources
 
