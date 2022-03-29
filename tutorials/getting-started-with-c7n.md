@@ -13,20 +13,20 @@ This tutorial will guide you through:
 This tutorial assumes you have familiarity with:
 
 * General software development practices
-* Amazon Web Services (AWS)
+* [Amazon Web Services (AWS)](https://aws.amazon.com/)
 * The Python programming language
 
 This tutorial requires:
 
 * Python 3.7+
 * Access to an AWS account with read-write permissions
-* The AWS Management Console
+* The [AWS Management Console](https://aws.amazon.com/console/)
 * A text editor of your choice
 
 This tutorial does not support:
 
 * Cloud providers other than AWS*
-* Environments other than AWS CloudShell
+* Environments other than [AWS CloudShell](https://aws.amazon.com/cloudshell/)
 
 (*While this tutorial features an AWS implementation of Cloud Custodian, be aware Cloud Custodian supports cloud providers Azure and GCP as well. Moreover, the basic concepts, syntax, and structure of Cloud Custodian policies can be applied across providers, so even if AWS is not your particular use case, this tutorial can still be a useful resource. To learn more, please refer to the [Cloud Custodian documentation](https://cloudcustodian.io/docs/index.html#).)
 
@@ -142,7 +142,7 @@ To install Cloud Custodian in CloudShell, perform the following:
 
 ## AWS Sandbox Infrastructure
 
-For this tutorial, you will want to provision some AWS infrastructure you can experiment with. The policy you will write and execute queries EC2 instances and filters on tags so you do not need to provision instances beyond the AWS free tier. Using the AWS Management Console, launch two EC2 instances and tag them as follows:
+For this tutorial, you will want to provision some AWS infrastructure you can experiment with. The policy you will write and execute queries EC2 instances and filters on tags so you do not need to provision instances beyond the AWS free tier. Using the AWS Management Console, [launch two EC2 instances](https://aws.amazon.com/ec2/) and tag them as follows:
 
 1. Tag one with the key `c7n-tutorial` and leave the value empty
 2. Tag one with the key `c7n-tutorial` and with the value `my-first-policy-pull` 
