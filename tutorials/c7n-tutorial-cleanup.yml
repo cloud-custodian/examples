@@ -4,7 +4,7 @@ policies:
     filters:
       - tag:c7n-tutorial: present
     actions:
-      - terminate
       - type: tag
         tags:
           c7n-tutorial: "terminated"
+      - terminate
