@@ -174,10 +174,11 @@ policies:
     filters:
       - tag:c7n-tutorial: "my-first-policy-pull"
     actions:
-      - stop
       - type: tag
         tags:
           c7n-tutorial: "it worked!"
+      - stop
+
 ```
 
 ## Copy and Paste Commands
