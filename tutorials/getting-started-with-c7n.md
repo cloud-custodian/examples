@@ -1,6 +1,6 @@
 # Getting Started with Cloud Custodian
 
-[Cloud Custodian](https://cloudcustodian.io/) – also known by its package name c7n – is a rules engine for cloud account and resource management. Cloud Custodian uses the data serialization language YAML to compose policy configuration files based on cloud resource queries, filters, and actions. Cloud Custodian is operated via a set of terminal commands.
+[Cloud Custodian](https://cloudcustodian.io/) – also known by its package name and numeronym c7n – is a rules engine for cloud account and resource management. Cloud Custodian uses the data serialization language YAML to compose policy configuration files based on cloud resource queries, filters, and actions. Cloud Custodian is operated via a set of terminal commands.
 
 Cloud Custodian is an open source project written in Python and part of the [Cloud Native Computing Foundation](https://www.cncf.io/) ecosystem.
 
@@ -178,7 +178,6 @@ policies:
         tags:
           c7n-tutorial: "it worked!"
       - stop
-
 ```
 
 ## Copy and Paste Commands
