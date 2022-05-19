@@ -1,0 +1,10 @@
+policies:
+  - name: my-first-policy-event-terminate-tagged-ec2
+    resource: aws.ec2
+    filters:
+      - tag:c7n-tutorial: present
+    actions:
+      - type: tag
+        tags:
+          c7n-tutorial: "terminated"
+      - terminate
